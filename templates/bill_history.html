@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2><i class="fa-solid fa-clock-rotate-left"></i> Bill History</h2>
+
+<div class="glass-card p-3">
+
+    <input type="text" id="searchInput" class="form-control neon-input mb-3" placeholder="Search Customer...">
+
+    <table class="table-neon text-center">
+        <thead>
+            <tr>
+                <th>Invoice</th>
+                <th>Customer</th>
+                <th>Date</th>
+                <th>Total</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody id="billTable">
+            {% for bill in bills %}
+            <tr>
+                <td>{{ bill.invoice_no }}</td>
+                <td>{{ bill.customer_name }}</td>
+                <td>{{ bill.date }}</td>
+                <td>₹ {{ bill.total_amount }}</td>
+                <td>
+                    <a href="/billing/print/{{ bill.id }}/" class="btn-neon">Print</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+<script>
+document.getElementById("searchInput").addEventListener("keyup", function() {
+    let value = this.value.toLowerCase();
+    let rows = document.querySelectorAll("#billTable tr");
+
+    rows.forEach(row => {
+        let text = row.innerText.toLowerCase();
+        row.style.display = text.includes(value) ? "" : "none";
+    });
+});
+</script>
+
+{% endblock %}

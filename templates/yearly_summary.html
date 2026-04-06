@@ -1,0 +1,51 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+
+<h2><i class="fa-solid fa-chart-line"></i> Yearly Summary</h2>
+
+<!-- FILTER -->
+<div class="glass-card p-3 mb-4 d-flex gap-3">
+  <select id="yearSelect" class="form-control neon-input"></select>
+
+  <button class="btn-neon" onclick="filterYear()">
+    <i class="fa-solid fa-filter"></i> Filter
+  </button>
+</div>
+
+<!-- TABLE -->
+<div class="glass-card">
+  <table class="table-neon text-center">
+    <thead>
+      <tr>
+        <th>Month</th>
+        <th>CASH</th>
+        <th>GPAY</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for row in data %}
+      <tr>
+        <td>{{ row.month }}</td>
+        <td>₹ {{ row.cash }}</td>
+        <td>₹ {{ row.gpay }}</td>
+        <td>₹ {{ row.total }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+
+    <tfoot>
+      <tr>
+        <th>TOTAL</th>
+        <th>₹ {{ total_cash }}</th>
+        <th>₹ {{ total_gpay }}</th>
+        <th>₹ {{ final_total }}</th>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+
+
+<script src="{% static 'js/yearly_summary.js' %}"></script>
+
+{% endblock %}

@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<h2 class="mb-4">
+    <i class="fa-solid fa-chart-line"></i> Dashboard
+</h2>
+
+<!-- TOP CARDS -->
+<div class="row g-4">
+
+    <div class="col-md-4">
+        <div class="glass-card">
+            <h6>Today</h6>
+            <h3>₹ {{ today_income }}</h3>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="glass-card">
+            <h6>Monthly</h6>
+            <h3>₹ {{ monthly_income }}</h3>
+        </div>
+    </div>
+    <!-- Yearly Income -->
+    <div class="col-md-4">
+        <div class="glass-card">
+            <h6><i class="fa-solid fa-chart-line"></i> Yearly</h6>
+            <h3>₹ {{ yearly_income }}</h3>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="glass-card">
+            <h6>Monthly Expense</h6>
+            <h3>₹ {{ expense }}</h3>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="glass-card">
+            <h6>Monthly Profit</h6>
+            <h3>₹ {{ profit }}</h3>
+        </div>
+    </div>
+
+</div>
+
+<!-- BREAKDOWN -->
+<div class="row mt-4 g-4">
+
+    <div class="col-md-6">
+        <div class="glass-card">
+            <h5>
+                📊 <span class="text-neon">{{ month_name }}</span> Monthly Breakdown
+            </h5>
+            <p>XEROX: ₹ {{ xe }}</p>
+            <p>PRESS: ₹ {{ press }}</p>
+            <p>ONLINE: ₹ {{ online }}</p>
+            <p>COLOR: ₹ {{ color }}</p>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="glass-card">
+            <h5>
+                📅 <span class="text-neon">{{ year }}</span> Yearly Breakdown
+            </h5>
+            <p>XEROX: ₹ {{ xe_y }}</p>
+            <p>PRESS: ₹ {{ press_y }}</p>
+            <p>ONLINE: ₹ {{ online_y }}</p>
+            <p>COLOR: ₹ {{ color_y }}</p>
+        </div>
+    </div>
+    
+
+</div>
+
+<!-- CHART -->
+<div class="glass-card mt-4">
+    <h5>📈 Last 7 Days Income</h5>
+    <canvas id="chart" height="100"></canvas>
+</div>
+
+<!-- CHART JS -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+const labels = {{ labels|safe }};
+const data = {{ data|safe }};
+
+const ctx = document.getElementById('chart').getContext('2d');
+
+// Gradient glow
+const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+gradient.addColorStop(0, "rgba(0,242,255,0.6)");
+gradient.addColorStop(1, "rgba(0,242,255,0)");
+
+new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: labels,
+        datasets: [{
+            label: 'Income',
+            data: data,
+            borderColor: '#00f2ff',
+            backgroundColor: gradient,
+            borderWidth: 3,
+            tension: 0.5,
+            fill: true,
+            pointBackgroundColor: '#00f2ff',
+            pointRadius: 6
+        }]
+    },
+    options: {
+        animation: {
+            duration: 1500,
+            easing: 'easeInOutQuart'
+        },
+        plugins: {
+            legend: {
+                labels: {
+                    color: "white"
+                }
+            }
+        },
+        scales: {
+            x: {
+                ticks: { color: "white" }
+            },
+            y: {
+                ticks: { color: "white" }
+            }
+        }
+    }
+});
+</script>
+
+{% endblock %}

@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h2 class="mb-4">
+    <i class="fa-solid fa-table"></i>
+    Data Entry - <span id="todayDate"></span>
+</h2>
+<div class="date-picker-container mb-3">
+        <label for="selectedDate"><i class="fa-solid fa-calendar-days"></i> Select Date:</label>
+        <input type="date" id="selectedDate" onchange="fetchDataByDate()">
+    </div>
+<div id="csrf-container" style="display:none;">
+    {% csrf_token %}
+</div>
+
+<div class="glass-card">
+    <table class="table-neon" id="entryTable">
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>XE</th>
+                <th>PRESS</th>
+                <th>ONLINE</th>
+                <th>COLOR</th>
+                <th>XG</th>
+                <th>PG</th>
+                <th>OG</th>
+                <th>CG</th>
+                <th>Total</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+            <tr>
+                <td>1</td>
+                <td><input type="number" class="form-control input" value="0"></td>
+                <td><input type="number" class="form-control input" value="0"></td>
+                <td><input type="number" class="form-control input" value="0"></td>
+                <td><input type="number" class="form-control input" value="0"></td>
+                <td><input type="number" class="form-control input" value="0"></td>
+                <td><input type="number" class="form-control input" value="0"></td>
+                <td><input type="number" class="form-control input" value="0"></td>
+                <td><input type="number" class="form-control input" value="0"></td>
+                <td class="row-total">0</td>
+                <td>
+                    <button class="btn-delete" onclick="deleteRow(this)">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="9">Grand Total</th>
+                <th id="grandTotal">0</th>
+                <th></th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+<div class="mt-4 text-center">
+    <button class="btn-neon me-3" onclick="addRow()">
+        <i class="fa-solid fa-plus"></i> Add Row
+    </button>
+    <button class="btn-neon-save" onclick="saveData()">
+        <i class="fa-solid fa-floppy-disk"></i> Save Data
+    </button>
+</div>
+
+<script src="{% static 'js/data_entry.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+
+<h2 class="mb-4"><i class="fa-solid fa-calendar"></i> Monthly Summary</h2>
+
+<div class="glass-card filter-bar mb-4 p-3 d-flex gap-3 align-items-center">
+
+    <select id="monthSelect" class="form-select neon-input" style="max-width:150px;"></select>
+    <select id="yearSelect" class="form-select neon-input" style="max-width:120px;"></select>
+
+    <input type="hidden" id="selectedMonth" value="{{ selected_month }}">
+    <input type="hidden" id="selectedYear" value="{{ selected_year }}">
+
+    <button class="btn-neon" onclick="filterData()">
+        <i class="fa-solid fa-filter"></i> Filter
+    </button>
+    <button class="btn-neon" onclick="exportExcel()">
+        <i class="fa-solid fa-file-excel"></i> Export Excel
+    </button>  
+</div>
+
+<div class="glass-card">
+  <table class="table-neon text-center">
+    <thead>
+      <tr>
+        <th>No.</th>
+        <th>Date</th>
+        <th>CASH</th>
+        <th>GPAY</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for row in data %}
+      <tr>
+        <td>{{ row.no }}</td>
+        <td>{{ row.date }}</td>
+        <td>₹ {{ row.cash }}</td>
+        <td>₹ {{ row.gpay }}</td>
+        <td>₹ {{ row.total }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="5">No Data Available</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+
+    <tfoot>
+      <tr>
+        <th colspan="2">GRAND TOTAL</th>
+        <th>₹ {{ cash_total }}</th>
+        <th>₹ {{ gpay_total }}</th>
+        <th>₹ {{ final_total }}</th>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+
+<script src="{% static 'js/monthly_summary.js' %}"></script>
+
+{% endblock %}

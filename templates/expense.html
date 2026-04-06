@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <!-- HEADER -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-white">
+            <i class="fa-solid fa-money-bill-wave"></i> Expense Manager
+        </h2>
+    </div>
+
+    <!-- ADD EXPENSE -->
+    <div class="glass-card p-4 mb-4">
+
+        {% csrf_token %}
+
+        <div class="row g-3">
+
+            <div class="col-md-3">
+                <input type="date" id="expDate" class="form-control neon-input">
+            </div>
+
+            <div class="col-md-5">
+                <input type="text" id="expTitle" class="form-control neon-input" placeholder="Expense Title">
+            </div>
+
+            <div class="col-md-2">
+                <input type="number" id="expAmount" class="form-control neon-input" placeholder="Amount">
+            </div>
+
+            <div class="col-md-2">
+                <button class="btn-action w-100" onclick="addExpense()">
+                    <i class="fa-solid fa-plus"></i> Add
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- FILTER -->
+    <div class="glass-card p-3 mb-3 d-flex gap-3 align-items-center">
+        <input type="date" id="filterDate" class="form-control neon-input" style="max-width:200px;">
+        <button class="btn-action" onclick="filterExpense()">
+            <i class="fa-solid fa-filter"></i> Filter
+        </button>
+    </div>
+
+    <!-- TABLE -->
+    <div class="glass-card p-3">
+
+        <table class="table-neon text-center w-100">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Date</th>
+                    <th>Title</th>
+                    <th>Amount</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody id="expenseBody"></tbody>
+        </table>
+
+        <div class="text-end mt-3">
+            <h4 class="text-white">
+                Total Expense: ₹ <span id="totalExpense">0.00</span>
+            </h4>
+        </div>
+
+    </div>
+
+</div>
+
+<script src="{% static 'js/expense.js' %}"></script>
+
+<style>
+.btn-action {
+    background: rgba(0,255,255,0.1);
+    border: 1px solid #00f2ff;
+    color: white;
+    padding: 10px;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+.btn-action:hover {
+    background: #00f2ff;
+    color: black;
+    box-shadow: 0 0 15px #00f2ff;
+}
+.btn-delete {
+    background: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 6px;
+}
+</style>
+
+{% endblock %}
