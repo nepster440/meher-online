@@ -21,15 +21,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-o%tes-!oq2lkggc&1d@6om=!)#a2e%v8@ly8dewrzz_b__lh!4'
+# SECRET_KEY = 'django-insecure-o%tes-!oq2lkggc&1d@6om=!)#a2e%v8@ly8dewrzz_b__lh!4'
 SECRET_KEY = os.environ.get('SECRET_KEY', 'unsafe-secret-key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['.onerender.com']
+ALLOWED_HOSTS = ['.onrender.com', 'localhost', '127.0.0.1']
 # ALLOWED_HOSTS = []
-
+db_url = os.environ.get('DATABASE_URL')
 
 # Application definition
 
@@ -50,6 +50,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -88,14 +89,10 @@ WSGI_APPLICATION = 'core.wsgi.application'
 #     }
 # }
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'meher_db',
-        'USER': 'postgres',
-        'PASSWORD': 'Nepster#440',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
+    'default': dj_database_url.config(
+        default=os.environ.get('DATABASE_URL'),
+        conn_max_age=600
+    )
 }
 
 # Password validation
@@ -132,9 +129,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
 
+CSRF_TRUSTED_ORIGINS = ['https://*.onrender.com']
