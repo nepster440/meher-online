@@ -2,8 +2,9 @@ from django.views.generic import TemplateView
 from django.http import JsonResponse
 from .models import Expense
 import json
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-class ExpenseView(TemplateView):
+class ExpenseView(LoginRequiredMixin, TemplateView):
     template_name = "expense.html"
 
     def get(self, request, *args, **kwargs):

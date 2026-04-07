@@ -3,8 +3,9 @@ from data_entry.models import DailyEntry
 from datetime import date, timedelta
 from expenses.models import Expense
 import calendar
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-class DashboardView(TemplateView):
+class DashboardView(LoginRequiredMixin, TemplateView):
     template_name = "dashboard.html"
 
     def get_context_data(self, **kwargs):

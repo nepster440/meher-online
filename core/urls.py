@@ -17,21 +17,35 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from dashboard.views import DashboardView
+from django.shortcuts import redirect
+
+
+# 🔐 Root redirect (login ya dashboard)
+def home_redirect(request):
+    if request.user.is_authenticated:
+        return redirect('dashboard')
+    return redirect('login')
+
 
 urlpatterns = [
+
+    # Admin
     path('admin/', admin.site.urls),
 
-    # Dashboard (Home)
-    path('', DashboardView.as_view(), name='dashboard'),
+    # Root (IMPORTANT 🔥)
+    path('', home_redirect),
 
-    # Data Entry App
+    # Accounts (login/logout)
+    path('', include('accounts.urls')),
+
+    # Dashboard
+    path('dashboard/', DashboardView.as_view(), name='dashboard'),
+
+    # Apps
     path('data/', include('data_entry.urls')),
-
-    # Future apps (already ready)
     path('monthly/', include('monthly_summary.urls')),
     path('yearly/', include('yearly_summary.urls')),
     path('billing/', include('billing.urls')),
-
-    # Expenses App
     path('expense/', include('expenses.urls')),
+
 ]

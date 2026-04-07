@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Meher | Login</title>
+
+    {% load static %}
+    <link rel="icon" href="{% static 'images/favicon.ico' %}" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        overflow: hidden;
+      }
+
+      .login-box-container {
+        position: relative;
+        padding-top: 50px;
+      }
+
+      .login-box {
+        position: relative;
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        /* Logo ke liye space dene ke liye top padding badhai hai */
+        padding: 80px 40px 40px 40px;
+        border-radius: 20px;
+        width: 380px;
+        text-align: center;
+        box-shadow:
+          0 15px 35px rgba(0, 0, 0, 0.5),
+          0 0 15px rgba(236, 0, 140, 0.2);
+        transition: 0.3s;
+      }
+
+      .login-box:hover {
+        box-shadow:
+          0 15px 35px rgba(0, 0, 0, 0.5),
+          0 0 25px rgba(0, 242, 255, 0.3);
+      }
+
+      /* 🔥 ROUND LOGO CONTAINER (50% upar, 50% niche outline par) */
+      /* Logo container ko thoda bada aur saaf karein */
+      .round-logo {
+        position: absolute;
+        width: 130px; /* Size thoda badhaya */
+        height: 130px;
+        top: 0;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff; /* White background taaki logo saaf dikhe */
+        border-radius: 50%;
+        border: 3px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 0 20px rgba(0, 242, 255, 0.6);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10;
+        overflow: hidden; /* Cut-off control karne ke liye niche img style dekhein */
+      }
+
+      /* Image ko box ke andar fit karne ke liye */
+      .round-logo img {
+        width: 90%; /* 100% ki jagah 90% taaki edges touch na ho */
+        height: 90%;
+        object-fit: contain; /* Isse pura logo bina kote (scale hokar) andar dikhega */
+        border-radius: 0; /* Logo ka asli shape rehne dein agar wo round nahi hai toh */
+      }
+
+      .brand-logo {
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin-bottom: 5px;
+        background: linear-gradient(to right, #00f2ff, #ec008c);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        letter-spacing: 2px;
+      }
+
+      h2 {
+        color: #fff;
+        font-weight: 300;
+        margin-bottom: 30px;
+        font-size: 1.2rem;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+
+      .input-group {
+        position: relative;
+        margin-bottom: 20px;
+      }
+
+      /* 1. Normal Input Style (Jo aapne pehle likha tha) */
+      input {
+        width: 100%;
+        padding: 12px 15px;
+        background: rgba(
+          255,
+          255,
+          255,
+          0.08
+        ) !important; /* Halka transparent white */
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        outline: none;
+        color: #fff !important;
+        font-size: 1rem;
+        transition: 0.3s;
+      }
+
+      /* 2. 🔥 Autofill Fix (Browser ka white background hatane ke liye) */
+      input:-webkit-autofill,
+      input:-webkit-autofill:hover,
+      input:-webkit-autofill:focus,
+      input:-webkit-autofill:active {
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: #ffffff !important; /* Text hamesha white rahega */
+        transition: background-color 5000s ease-in-out 0s; /* Background color ko freeze kar dega */
+        box-shadow: inset 0 0 20px 20px rgba(255, 255, 255, 0.05) !important; /* Glass look maintain rakhega */
+      }
+
+      /* 3. Focus Style (Jab click karein) */
+      input:focus {
+        border-color: #00f2ff !important;
+        background: rgba(255, 255, 255, 0.12) !important;
+        box-shadow: 0 0 15px rgba(0, 242, 255, 0.3) !important;
+      }
+
+      /* 4. Placeholder Color */
+      input::placeholder {
+        color: rgba(255, 255, 255, 0.4);
+      }
+      button {
+        width: 100%;
+        padding: 12px;
+        margin-top: 10px;
+        border: none;
+        border-radius: 8px;
+        background: linear-gradient(to right, #ec008c, #673ab7);
+        color: white;
+        font-size: 1rem;
+        font-weight: bold;
+        cursor: pointer;
+        text-transform: uppercase;
+        transition: 0.4s;
+        box-shadow: 0 4px 15px rgba(236, 0, 140, 0.3);
+      }
+
+      button:hover {
+        background: linear-gradient(to right, #00f2ff, #0072ff);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 20px rgba(0, 242, 255, 0.4);
+      }
+
+      .footer-text {
+        color: rgba(255, 255, 255, 0.5);
+        margin-top: 25px;
+        font-size: 0.8rem;
+      }
+
+      .errorlist {
+        color: #ff4d4d;
+        list-style: none;
+        font-size: 0.85rem;
+        margin-bottom: 15px;
+        text-align: left;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="login-box-container">
+      <div class="login-box">
+        <div class="round-logo">
+          <img src="{% static 'images/logo.png' %}" alt="MeheR Logo" />
+        </div>
+
+        <div class="brand-logo">Meher Online</div>
+        <h2>Secure Login</h2>
+
+        <form method="post">
+          {% csrf_token %} {% if form.errors %}
+          <div class="errorlist">Incorrect username or password.</div>
+          {% endif %}
+
+          <div class="input-group">{{ form.username }}</div>
+
+          <div class="input-group">{{ form.password }}</div>
+
+          <button type="submit">
+            <i class="fa-solid fa-right-to-bracket"></i> Sign In
+          </button>
+        </form>
+
+        <div class="footer-text">
+          &copy; {% now "Y" %} MEHER | Created by NEPSTER
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

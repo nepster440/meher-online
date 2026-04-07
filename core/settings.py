@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'yearly_summary',
     'billing',
     'expenses',
+    'accounts',
 ]
 
 MIDDLEWARE = [
@@ -82,18 +83,47 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
+# settings.py mein DATABASES section
+db_url = os.environ.get('DATABASE_URL')
+
+if db_url:
+    # Render (PostgreSQL) ke liye
+    DATABASES = {
+        'default': dj_database_url.config(default=db_url)
+    }
+else:
+    # Local (SQLite) ke liye
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
-DATABASES = {
-    'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL'),
-        conn_max_age=600
-    )
-}
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         default=os.environ.get('DATABASE_URL'),
+#         conn_max_age=600
+#     )
+# }
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'meher_db',
+#         'USER': 'postgres',
+#         'PASSWORD': 'Nepster#440',
+#         'HOST': 'localhost',  # Or the IP address of your DB server
+#         'PORT': '5432',       # Default PostgreSQL port
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
@@ -135,5 +165,11 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
+
+
+# Purane paths ki jagah URL names use karein
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'dashboard'  # Kyunki aapka home page dashboard hai
+LOGOUT_REDIRECT_URL = 'login'
 
 CSRF_TRUSTED_ORIGINS = ['https://*.onrender.com']

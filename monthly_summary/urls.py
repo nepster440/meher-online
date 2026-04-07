@@ -3,6 +3,6 @@ from .views import MonthlySummaryView
 from .views import export_excel
 
 urlpatterns = [
-    path('', MonthlySummaryView.as_view(), name='monthly-summary'),
+    path('', MonthlySummaryView.as_view(), name='monthly'),
     path('export/', export_excel, name='export-excel'),
 ]

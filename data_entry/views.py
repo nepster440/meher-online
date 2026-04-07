@@ -2,8 +2,9 @@ from django.views.generic import TemplateView
 from django.http import JsonResponse
 from .models import DailyEntry
 import json
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-class DataEntryView(TemplateView):
+class DataEntryView(LoginRequiredMixin, TemplateView):
     template_name = "data_entry.html"
 
     def post(self, request, *args, **kwargs):

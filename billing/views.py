@@ -17,10 +17,11 @@ from reportlab.lib.pagesizes import A4
 from reportlab.platypus import *
 from num2words import num2words
 import json, os, qrcode
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 # ✅ CREATE BILL
-class BillingView(TemplateView):
+class BillingView(LoginRequiredMixin, TemplateView):
     template_name = "billing.html"
 
     def get_context_data(self, **kwargs):

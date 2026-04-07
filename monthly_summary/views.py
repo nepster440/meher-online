@@ -6,9 +6,10 @@ from django.http import HttpResponse
 from openpyxl import Workbook
 from openpyxl.styles import Font, Alignment, PatternFill, Border, Side
 from openpyxl.utils import get_column_letter
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
-class MonthlySummaryView(TemplateView):
+class MonthlySummaryView(LoginRequiredMixin, TemplateView):
     template_name = "monthly_summary.html"
 
     def get_context_data(self, **kwargs):

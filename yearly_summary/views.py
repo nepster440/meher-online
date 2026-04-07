@@ -4,8 +4,9 @@ from django.db.models.functions import ExtractMonth
 from django.db.models import Sum
 from datetime import datetime
 import calendar
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-class YearlySummaryView(TemplateView):
+class YearlySummaryView(LoginRequiredMixin, TemplateView):
     template_name = "yearly_summary.html"
 
     def get_context_data(self, **kwargs):
