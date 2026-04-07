@@ -1,0 +1,924 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap');
+
+/* =====================================================
+   🎨 THEME COLORS (LIGHT MODE DEFAULT)
+===================================================== */
+:root {
+    --primary: #0EAAE3;
+    /* Neon Blue */
+    --surface: #6E0C9C;
+    /* Purple */
+    --text: #ffffff;
+    /* White text */
+}
+
+/* =====================================================
+   🌙 DARK MODE COLORS (Override Variables)
+===================================================== */
+.dark-mode {
+    --primary: #030637;
+    /* Deep Blue */
+    --surface: #DA0C81;
+    /* Neon Pink */
+    --text: #ffffff;
+}
+
+/* =====================================================
+   🌐 GLOBAL STYLING
+===================================================== */
+body {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    /* Montserrat applied */
+    color: var(--text);
+    overflow-x: hidden;
+
+    /* Animated gradient background */
+    background: linear-gradient(-45deg, var(--primary), var(--surface), #000);
+    background-size: 400% 400%;
+    animation: gradientMove 10s ease infinite;
+}
+
+/* Background animation */
+@keyframes gradientMove {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* =====================================================
+   📐 LAYOUT STRUCTURE
+===================================================== */
+.layout {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+    overflow-x: hidden;
+    /* Screen ke bahar content na jaye */
+}
+
+/* =====================================================
+   📌 SIDEBAR
+===================================================== */
+.sidebar {
+    width: 250px;
+    flex-shrink: 0;
+    /* Sidebar ko dabne se rokta hai */
+    min-height: 100vh;
+    background: linear-gradient(180deg, var(--surface), var(--primary));
+    display: flex;
+    flex-direction: column;
+    transition: width 0.3s ease;
+    /* Transition sirf width par */
+
+    box-shadow: 0 0 20px var(--primary);
+    animation: neonPulse 3s infinite alternate;
+}
+
+/* Collapsed Sidebar */
+.sidebar.hide {
+    width: 70px;
+}
+
+/* Hide text in collapsed */
+.sidebar.hide span {
+    display: none;
+}
+
+/* Center icons */
+.sidebar.hide .nav-link {
+    text-align: center;
+    padding: 10px 0;
+}
+
+/* Center logo */
+.sidebar.hide .logo-box {
+    justify-content: center;
+}
+.sidebar::after {
+    pointer-events: none;   /* ⭐ CLICK PASS THROUGH */
+}
+/* =====================================================
+   🏷️ LOGO
+===================================================== */
+.logo-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px;
+    font-weight: bold;
+}
+
+/* =====================================================
+   🔗 NAVIGATION LINKS
+===================================================== */
+.sidebar .nav-link {
+    color: var(--text);
+    padding: 10px 20px;
+    transition: 0.3s;
+}
+
+.sidebar .nav-link:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+
+    /* Neon hover glow */
+    box-shadow: 0 0 10px var(--primary), 0 0 20px var(--primary);
+}
+
+/* =====================================================
+   📦 MAIN CONTENT AREA
+===================================================== */
+.main {
+    flex-grow: 1;
+    /* Bachi hui poori jagah lega */
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    /* Flexbox bug prevent karne ke liye */
+}
+
+/* =====================================================
+   🔝 TOPBAR
+===================================================== */
+.topbar {
+    height: 60px;
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 20px;
+    box-sizing: border-box;
+    /* Padding ko width ke andar rakhta hai */
+
+    border-bottom: 1px solid var(--primary);
+    box-shadow: 0 0 10px var(--primary);
+}
+
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-shrink: 0;
+    /* Button ko gayab hone se rokta hai */
+}
+
+/* =====================================================
+   🍔 MENU BUTTON
+===================================================== */
+.menu-btn {
+    border: none;
+    background: linear-gradient(135deg, var(--primary), var(--surface));
+    color: var(--text);
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+.menu-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px var(--primary);
+}
+
+/* =====================================================
+   📄 CONTENT AREA
+===================================================== */
+.content {
+    padding: 20px;
+    flex: 1;
+}
+
+/* =====================================================
+   🧊 GLASS CARD (Glassmorphism + Neon)
+===================================================== */
+.glass-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(15px);
+    border-radius: 15px;
+    padding: 20px;
+    position: relative;
+    z-index: 1;
+    /* overflow: hidden; */
+    overflow: visible !important;
+    margin-top: 10px;
+    /* Neon glow */
+    box-shadow: 0 0 20px var(--primary);
+    transition: 0.3s;
+}
+
+/* Neon animated border */
+.glass-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 15px;
+    padding: 2px;
+    background: linear-gradient(45deg, var(--primary), var(--surface), var(--primary));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: neonBorder 4s linear infinite;
+}
+
+/* Border animation */
+@keyframes neonBorder {
+    0% {
+        filter: hue-rotate(0deg);
+    }
+
+    100% {
+        filter: hue-rotate(360deg);
+    }
+}
+
+/* Hover effect */
+.glass-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 0 30px var(--primary);
+}
+
+/* =====================================================
+   🔤 TEXT STYLING
+===================================================== */
+h2,
+h3,
+h5,
+h6,
+p {
+    color: var(--text);
+}
+
+/* Neon glow text */
+h2,
+h3 {
+    text-shadow: 0 0 5px var(--primary), 0 0 10px var(--primary);
+}
+
+/* =====================================================
+   🎯 THEME ICON BUTTON
+===================================================== */
+.theme-icon-btn {
+    border: none;
+    background: linear-gradient(135deg, var(--primary), var(--surface));
+    color: var(--text);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+.theme-icon-btn:hover {
+    box-shadow: 0 0 15px var(--primary);
+}
+
+/* =====================================================
+   📌 FOOTER
+===================================================== */
+.footer {
+    padding: 10px;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.3);
+    color: var(--text);
+}
+
+/* =====================================================
+   ⚡ NEON PULSE ANIMATION
+===================================================== */
+@keyframes neonPulse {
+    0% {
+        box-shadow: 0 0 5px var(--primary);
+    }
+
+    50% {
+        box-shadow: 0 0 20px var(--primary);
+    }
+
+    100% {
+        box-shadow: 0 0 5px var(--primary);
+    }
+}
+
+/* =====================================================
+   ⏳ LOADER (Glass Morph)
+===================================================== */
+.loader {
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.loader-box {
+    padding: 20px 40px;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 20px var(--primary);
+    animation: neonPulse 2s infinite alternate;
+}
+
+/* =====================================================
+   📱 RESPONSIVE DESIGN
+===================================================== */
+@media (max-width: 768px) {
+
+    .sidebar {
+        position: absolute;
+        left: -250px;
+        z-index: 1000;
+    }
+
+    .sidebar.show {
+        left: 0;
+    }
+
+    .sidebar.hide {
+        width: 250px;
+        /* Disable collapse on mobile */
+    }
+}
+
+/* ===== DATE PICKER NEON STYLE (TABLE MATCH) ===== */
+.date-picker-container {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 25px;
+    padding: 10px 20px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+
+    box-shadow: 0 0 20px var(--primary);
+    overflow: hidden;
+}
+
+/* 🔥 Neon animated border (same as glass-card) */
+.date-picker-container::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 12px;
+    padding: 2px;
+
+    background: linear-gradient(45deg, var(--primary), var(--surface), var(--primary));
+
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    /* 🔥 IMPORTANT FIX */
+    animation: neonBorder 4s linear infinite;
+}
+
+/* Hover effect */
+.date-picker-container:hover {
+    box-shadow: 0 0 30px var(--primary);
+    transform: scale(1.02);
+    transition: 0.3s;
+}
+
+/* Input styling */
+.date-picker-container input[type="date"] {
+    position: relative;
+    /* 🔥 IMPORTANT */
+    z-index: 10;
+    /* upar lao */
+    pointer-events: auto;
+    /* click enable */
+    background: transparent;
+    border: none;
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    outline: none;
+    cursor: pointer;
+
+}
+
+/* ===== EXCEL STYLE TABLE (FIXED) ===== */
+.table-neon {
+    width: 100%;
+    border-collapse: collapse;
+    color: white;
+    table-layout: fixed;
+    /* Taaki columns barabar rahein */
+}
+
+.table-neon th,
+.table-neon td {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 0;
+    /* Padding 0 ki taaki input poori jagah le sake */
+    text-align: center;
+    height: 45px;
+    /* Fixed height taaki click area bada ho */
+    position: relative;
+}
+
+.table-neon th {
+    background: rgba(255, 255, 255, 0.1);
+    text-shadow: 0 0 5px var(--primary);
+    padding: 10px;
+    /* Header mein padding zaroori hai */
+}
+
+.table-neon td {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+/* INPUT FIELD FIXES 🔥 */
+.table-neon input {
+    background: transparent;
+    border: none;
+    color: #d3eef8;
+    /* Neon Blue text while typing */
+    text-align: center;
+    width: 100%;
+    /* Poori width cover karega */
+    height: 100%;
+    /* Poori height cover karega */
+    display: block;
+    /* Block banane se click area badh jata hai */
+    outline: none;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    position: absolute;
+    /* Clickability issue fix karne ke liye */
+    top: 0;
+    left: 0;
+    z-index: 5;
+    pointer-events: auto !important;
+    /* Ensure click works */
+}
+
+/* Jab input par click karein */
+.table-neon td:focus-within {
+    background: rgba(14, 170, 227, 0.15);
+    box-shadow: inset 0 0 10px var(--primary);
+}
+
+/* Input Focus Effect */
+.table-neon input:focus {
+    background: rgba(255, 255, 255, 0.05);
+    /* Focus par halka highlight */
+    box-shadow: inset 0 0 10px var(--primary);
+    /* Glow inside the cell */
+}
+
+/* Chrome/Safari se arrows hatane ke liye */
+.table-neon input::-webkit-outer-spin-button,
+.table-neon input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.table-neon tr:hover {
+    background: rgba(255, 255, 255, 0.02);
+    box-shadow: 0 0 10px var(--primary);
+    transition: 0.3s;
+}
+
+/* Delete Button Alignment */
+.btn-delete {
+    position: relative;
+    z-index: 10;
+}
+
+/* ===== ADD ROW BUTTON ===== */
+.btn-neon {
+    position: relative;
+    z-index: 10;
+    cursor: pointer;
+    background: linear-gradient(135deg, #8e2de2, #4a00e0);
+    border: none;
+    padding: 10px 18px;
+    border-radius: 10px;
+    color: white;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.btn-neon:hover {
+    box-shadow: 0 0 15px #8e2de2, 0 0 30px #4a00e0;
+    transform: scale(1.05);
+}
+
+/* ===== SAVE BUTTON ===== */
+.btn-neon-save {
+    background: linear-gradient(135deg, #00c6ff, #0072ff);
+    border: none;
+    padding: 10px 18px;
+    border-radius: 10px;
+    color: white;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.btn-neon-save:hover {
+    box-shadow: 0 0 15px #00c6ff, 0 0 30px #0072ff;
+    transform: scale(1.05);
+}
+
+/* ===== DELETE BUTTON ===== */
+.btn-delete {
+    background: red;
+    border: none;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 6px;
+    transition: 0.3s;
+}
+
+.btn-delete:hover {
+    box-shadow: 0 0 10px red;
+    transform: scale(1.1);
+}
+
+
+/* ===== NAV LINK BASE ===== */
+.sidebar .nav-link {
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    color: #ddd;
+    padding: 12px 20px;
+    transition: 0.3s ease;
+}
+
+/* ===== ACTIVE LINK (STRONG GLOW) ===== */
+.sidebar .nav-link.active-link {
+    color: #fff !important;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+
+    box-shadow:
+        0 0 10px var(--primary),
+        0 0 20px var(--primary),
+        0 0 40px var(--surface),
+        inset 0 0 10px rgba(255, 255, 255, 0.1);
+
+    animation: pulseGlow 2s ease-in-out infinite;
+}
+
+/* ===== LEFT NEON BAR ===== */
+.sidebar .nav-link.active-link::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 10%;
+    height: 80%;
+    width: 5px;
+    border-radius: 10px;
+
+    background: linear-gradient(180deg, var(--primary), var(--surface));
+
+    box-shadow:
+        0 0 10px var(--primary),
+        0 0 20px var(--primary),
+        0 0 30px var(--surface);
+
+    animation: neonMove 2s linear infinite;
+}
+
+/* ===== UNDERLINE ===== */
+.sidebar .nav-link.active-link span {
+    position: relative;
+}
+
+.sidebar .nav-link.active-link span::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    width: 100%;
+    height: 3px;
+
+    background: linear-gradient(90deg, var(--primary), var(--surface));
+
+    box-shadow:
+        0 0 10px var(--primary),
+        0 0 20px var(--surface);
+
+    animation: underlineFlow 1.5s linear infinite;
+}
+
+/* ===== RIPPLE GLOW ===== */
+.sidebar .nav-link::after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    top: 50%;
+    left: 50%;
+    border-radius: 50%;
+
+    background: radial-gradient(circle, var(--primary), transparent);
+
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: 0.4s;
+    z-index: -1;
+}
+
+.sidebar .nav-link:hover::after {
+    width: 220px;
+    height: 220px;
+    opacity: 0.3;
+}
+
+/* ===== ELECTRIC SPARK EFFECT ⚡ ===== */
+.sidebar .nav-link:hover {
+    animation: sparkFlicker 0.3s linear;
+}
+
+/* Spark overlay */
+.sidebar .nav-link:hover::before {
+    box-shadow:
+        0 0 20px var(--primary),
+        0 0 40px var(--primary),
+        0 0 60px var(--surface);
+}
+
+/* ===== ANIMATIONS ===== */
+
+/* Neon bar move */
+@keyframes neonMove {
+    0% {
+        transform: translateY(-30%);
+        opacity: 0.6;
+    }
+
+    50% {
+        transform: translateY(30%);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-30%);
+        opacity: 0.6;
+    }
+}
+
+/* Underline flow */
+@keyframes underlineFlow {
+    0% {
+        transform: scaleX(0.5);
+        opacity: 0.5;
+    }
+
+    50% {
+        transform: scaleX(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scaleX(0.5);
+        opacity: 0.5;
+    }
+}
+
+/* Pulse glow */
+@keyframes pulseGlow {
+    0% {
+        box-shadow:
+            0 0 5px var(--primary),
+            0 0 10px var(--primary),
+            0 0 20px var(--surface),
+            inset 0 0 5px rgba(255, 255, 255, 0.1);
+    }
+
+    50% {
+        box-shadow:
+            0 0 20px var(--primary),
+            0 0 40px var(--primary),
+            0 0 60px var(--surface),
+            inset 0 0 15px rgba(255, 255, 255, 0.2);
+    }
+
+    100% {
+        box-shadow:
+            0 0 5px var(--primary),
+            0 0 10px var(--primary),
+            0 0 20px var(--surface),
+            inset 0 0 5px rgba(255, 255, 255, 0.1);
+    }
+}
+
+/* Electric flicker */
+@keyframes sparkFlicker {
+    0% {
+        filter: brightness(1);
+    }
+
+    50% {
+        filter: brightness(2.5);
+    }
+
+    100% {
+        filter: brightness(1);
+    }
+}
+
+/* ===== NEON CURSOR TRAIL ===== */
+.cursor-trail {
+    position: fixed;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+
+    background: radial-gradient(circle, var(--primary), var(--surface));
+
+    box-shadow:
+        0 0 10px var(--primary),
+        0 0 20px var(--primary),
+        0 0 30px var(--surface);
+
+    transform: translate(-50%, -50%);
+    animation: fadeOut 0.6s linear forwards;
+}
+
+/* Fade animation */
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+        transform: scale(1) translate(-50%, -50%);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.3) translate(-50%, -50%);
+    }
+}
+
+/* MONTHLY SUMMARY FILTER */
+.neon-input {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--primary);
+    color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px var(--primary);
+}
+
+.neon-input:focus {
+    outline: none;
+    box-shadow: 0 0 20px var(--primary), 0 0 40px var(--surface);
+}
+
+
+select {
+    position: relative;
+    z-index: 9999;
+}
+
+
+.filter-bar {
+    overflow: visible !important;
+    position: relative;
+    z-index: 10;
+}
+
+/* ===== DEFAULT (LIGHT MODE) ===== */
+:root {
+    --dropdown-bg: #0EAAE3;
+    --dropdown-hover: #6E0C9C;
+    --dropdown-text: #ffffff;
+}
+
+/* ===== DARK MODE ===== */
+.dark-mode {
+    --dropdown-bg: #030637;
+    --dropdown-hover: #DA0C81;
+    --dropdown-text: #ffffff;
+}
+
+/* ===== SELECT FIELD ===== */
+select.neon-input {
+    background: rgba(255,255,255,0.08);
+    color: var(--dropdown-text);
+}
+
+/* ===== DROPDOWN OPTIONS ===== */
+select.neon-input option {
+    background: var(--dropdown-bg);
+    color: var(--dropdown-text);
+}
+
+/* ===== HOVER / ACTIVE OPTION ===== */
+select.neon-input option:checked,
+select.neon-input option:hover {
+    background: var(--dropdown-hover);
+    color: #fff;
+}
+
+
+/* =====================================================
+    🚀 FINAL CLICK & CALCULATION FIX (OVERRIDE)
+===================================================== */
+
+/* 1. Glass Card ke border ko peeche bhejo taaki buttons click ho sakein */
+.glass-card::before {
+    z-index: -1 !important; 
+    pointer-events: none !important;
+}
+
+/* 2. Buttons aur Inputs ko 'Top Priority' do */
+.btn-neon, 
+.btn-neon-save, 
+.btn-delete, 
+.btn-action,
+#customer, 
+.table-neon input {
+    position: relative !important;
+    z-index: 9999 !important; /* Sabse upar */
+    pointer-events: auto !important; /* Click enable */
+    cursor: pointer !important;
+}
+
+/* 3. Table Cell Fix: Click area block na ho */
+.table-neon td {
+    position: relative !important;
+    overflow: visible !important;
+}
+
+.table-neon input {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    height: 100% !important;
+    width: 100% !important;
+    z-index: 10 !important;
+}
+
+/* 4. Sidebar overlay fix (Just in case) */
+.sidebar::after {
+    display: none !important; /* Isse click block ho sakta hai */
+}
+
+/* ===== FINAL CLICK FIX (BILLING BUTTONS) ===== */
+.btn-action,
+.btn-delete,
+.input,
+.neon-input {
+    pointer-events: auto !important;
+    z-index: 9999 !important;
+    cursor: pointer !important;
+}
+
+/* ===== NEON TEXT ===== */
+.text-neon {
+    color: #00f2ff;
+    font-weight: bold;
+
+    text-shadow:
+        0 0 5px #00f2ff,
+        0 0 10px #00f2ff,
+        0 0 20px #00f2ff,
+        0 0 40px #00f2ff;
+
+    animation: neonPulse 1.5s infinite alternate;
+}
+
+/* ===== PROFIT COLOR ===== */
+.profit-positive {
+    color: #00ff9d;
+    text-shadow: 0 0 10px #00ff9d;
+}
+
+.profit-negative {
+    color: #ff4d4d;
+    text-shadow: 0 0 10px #ff4d4d;
+}
+
+/* 🔥 ANIMATION */
+@keyframes neonPulse {
+    0% {
+        text-shadow:
+            0 0 5px #00f2ff,
+            0 0 10px #00f2ff,
+            0 0 20px #00f2ff;
+    }
+    100% {
+        text-shadow:
+            0 0 10px #00f2ff,
+            0 0 20px #00f2ff,
+            0 0 40px #00f2ff,
+            0 0 80px #00f2ff;
+    }
+}
