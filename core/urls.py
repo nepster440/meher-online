@@ -21,12 +21,20 @@ from django.shortcuts import redirect
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 
-
+# 🚀 Fixed Admin Creator
 def create_admin(request):
-    if not User.objects.filter(username='admin_meher').exists():
-        User.objects.create_superuser('meher-online', 'mehercomputing@gmail.com', 'Nepster#440')
-        return HttpResponse("Admin Created Successfully!")
-    return HttpResponse("Admin already exists.")
+    # Username variable taaki dono jagah same rahe
+    username = 'meher-online'
+    
+    if not User.objects.filter(username=username).exists():
+        User.objects.create_superuser(
+            username=username, 
+            email='mehercomputing@gmail.com', 
+            password='Nepster#440'
+        )
+        return HttpResponse(f"✅ Success: Admin '{username}' created! Ab login kar sakte hain.")
+    
+    return HttpResponse(f"ℹ️ Info: Admin '{username}' pehle se bana hua hai.")
 
 # 🔐 Root redirect (login ya dashboard)
 def home_redirect(request):
@@ -34,13 +42,14 @@ def home_redirect(request):
         return redirect('dashboard')
     return redirect('login')
 
-
 urlpatterns = [
+    # Pehle is path ko browser mein run karein: /make-me-admin/
     path('make-me-admin/', create_admin),
-    # Admin
+
+    # Admin Panel
     path('admin/', admin.site.urls),
 
-    # Root (IMPORTANT 🔥)
+    # Root Redirect
     path('', home_redirect),
 
     # Accounts (login/logout)
@@ -55,5 +64,4 @@ urlpatterns = [
     path('yearly/', include('yearly_summary.urls')),
     path('billing/', include('billing.urls')),
     path('expense/', include('expenses.urls')),
-
 ]
