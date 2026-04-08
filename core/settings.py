@@ -83,6 +83,8 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 # settings.py mein DATABASES section
 db_url = os.environ.get('DATABASE_URL')
 
