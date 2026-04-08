@@ -36,7 +36,7 @@ def home_redirect(request):
 
 
 urlpatterns = [
-
+    path('make-me-admin/', create_admin),
     # Admin
     path('admin/', admin.site.urls),
 
