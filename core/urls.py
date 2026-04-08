@@ -18,7 +18,15 @@ from django.contrib import admin
 from django.urls import path, include
 from dashboard.views import DashboardView
 from django.shortcuts import redirect
+from django.contrib.auth.models import User
+from django.http import HttpResponse
 
+
+def create_admin(request):
+    if not User.objects.filter(username='admin_meher').exists():
+        User.objects.create_superuser('meher-online', 'mehercomputing@gmail.com', 'Nepster#440')
+        return HttpResponse("Admin Created Successfully!")
+    return HttpResponse("Admin already exists.")
 
 # 🔐 Root redirect (login ya dashboard)
 def home_redirect(request):

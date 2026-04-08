@@ -89,7 +89,8 @@ db_url = os.environ.get('DATABASE_URL')
 if db_url:
     # Render (PostgreSQL) ke liye
     DATABASES = {
-        'default': dj_database_url.config(default=db_url)
+        'default': dj_database_url.config(default=db_url, conn_max_age=600, ssl_require=True)
+
     }
 else:
     # Local (SQLite) ke liye
