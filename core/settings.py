@@ -26,7 +26,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'unsafe-secret-key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-
+ALLOWED_HOSTS = ['nepster440.pythonanywhere.com', 'localhost', '127.0.0.1'] # Apna username yahan likhein
 ALLOWED_HOSTS = ['.onrender.com', 'localhost', '127.0.0.1']
 # ALLOWED_HOSTS = []
 db_url = os.environ.get('DATABASE_URL')
