@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from .models import Customer, Udhaar, Payment
 from django.db.models import Sum
 
+# Create your views here.
 def udhaar_home(request):
 
     if request.method == "POST":
@@ -46,18 +47,71 @@ def udhaar_home(request):
         balance = total_udhaar - total_paid
 
         data.append({
+            "id": c.id,  # 👈 Yeh zaroori hai 'delete_customer' link ke liye
             "name": c.name,
             "udhaar": total_udhaar,
             "paid": total_paid,
             "balance": balance,
-            "entries": c.entries.all(),
-            "payments": c.payments.all()
+            "entries": c.entries.all(),  # ✅ Ye bilkul sahi hai
+            "payments": c.payments.all()  # ✅ Ye bhi sahi hai
         })
 
     return render(request, "udhaar.html", {"data": data})
 
 
+
+def delete_udhaar(request, id):
+    entry = get_object_or_404(Udhaar, id=id)
+    entry.delete()
+    return redirect('udhaar')
+
+def delete_payment(request, id):
+    payment = get_object_or_404(Payment, id=id)
+    payment.delete()
+    return redirect('udhaar')
+
 def delete_customer(request, id):
     customer = get_object_or_404(Customer, id=id)
     customer.delete()
     return redirect('udhaar')
+
+
+def edit_udhaar(request, id):
+    entry = get_object_or_404(Udhaar, id=id)
+
+    if request.method == "POST":
+        entry.amount = request.POST.get('amount')
+        entry.description = request.POST.get('desc')
+        entry.save()
+        return redirect('udhaar')
+
+    return render(request, 'edit_udhaar.html', {'entry': entry})
+
+
+
+def delete_udhaar(request, id):
+    entry = get_object_or_404(Udhaar, id=id)
+    entry.delete()
+    return redirect('udhaar')
+
+def delete_payment(request, id):
+    payment = get_object_or_404(Payment, id=id)
+    payment.delete()
+    return redirect('udhaar')
+
+def delete_customer(request, id):
+    customer = get_object_or_404(Customer, id=id)
+    customer.delete()
+    return redirect('udhaar')
+
+
+def edit_udhaar(request, id):
+    entry = get_object_or_404(Udhaar, id=id)
+
+    if request.method == "POST":
+        entry.amount = request.POST.get('amount')
+        entry.description = request.POST.get('desc')
+        entry.save()
+        return redirect('udhaar')
+
+    return render(request, 'edit_udhaar.html', {'entry': entry})

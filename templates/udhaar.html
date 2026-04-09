@@ -4,72 +4,91 @@
 
 <h2 class="mb-3">💰 Udhaar Ledger</h2>
 
-<div class="glass-card p-4 mb-4">
-
-    <h4 class="text-neon mb-4">💰 Udhaar Ledger</h4>
-
-    <!-- 🔥 ADD UDHAAR -->
-    <div class="row g-3 align-items-end mb-4">
-
-        <div class="col-md-3">
-            <label class="mb-1">Customer</label>
-            <input type="text" name="customer" form="udhaarForm"
-                   class="form-control neon-input"
-                   placeholder="Enter Name" required>
-        </div>
-
-        <div class="col-md-2">
-            <label class="mb-1">Amount</label>
-            <input type="number" name="amount" form="udhaarForm"
-                   class="form-control neon-input"
-                   placeholder="₹ 0" required>
-        </div>
+<!-- 🔍 SEARCH + FILTER -->
+<div class="glass-card p-3 mb-4">
+    <form method="get" class="row g-2">
 
         <div class="col-md-4">
-            <label class="mb-1">Description</label>
-            <input type="text" name="desc" form="udhaarForm"
+            <input type="text" name="q" value="{{ query }}"
                    class="form-control neon-input"
-                   placeholder="Xerox / Print">
+                   placeholder="🔍 Search customer...">
         </div>
 
         <div class="col-md-3">
-            <form method="post" id="udhaarForm">
-                {% csrf_token %}
-                <input type="hidden" name="action" value="udhaar">
-                <button class="btn-neon w-100">➕ Add Udhaar</button>
-            </form>
+            <input type="date" name="start" class="form-control neon-input">
         </div>
 
-    </div>
+        <div class="col-md-3">
+            <input type="date" name="end" class="form-control neon-input">
+        </div>
+
+        <div class="col-md-2 d-flex gap-2">
+            <button class="btn-neon w-100">Search</button>
+            <a href="/udhaar/" class="btn-neon-save w-100">Reset</a>
+        </div>
+
+    </form>
+</div>
+
+<!-- 🔥 MAIN FORM -->
+<div class="glass-card p-4 mb-4">
+
+    <h4 class="text-neon mb-4">💰 Udhaar Entry</h4>
+
+    <!-- ADD UDHAAR -->
+    <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="udhaar">
+
+        <div class="row g-3 align-items-end mb-4">
+
+            <div class="col-md-3">
+                <label>Customer</label>
+                <input type="text" name="customer" class="form-control neon-input" required>
+            </div>
+
+            <div class="col-md-2">
+                <label>Amount</label>
+                <input type="number" name="amount" class="form-control neon-input" required>
+            </div>
+
+            <div class="col-md-4">
+                <label>Description</label>
+                <input type="text" name="desc" class="form-control neon-input">
+            </div>
+
+            <div class="col-md-3">
+                <button class="btn-neon w-100">➕ Add Udhaar</button>
+            </div>
+
+        </div>
+    </form>
 
     <hr style="border-color: var(--primary); opacity: 0.3;">
 
-    <!-- 🔥 RECEIVE PAYMENT -->
-    <div class="row g-3 align-items-end">
+    <!-- PAYMENT -->
+    <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="payment">
 
-        <div class="col-md-5">
-            <label class="mb-1">Customer</label>
-            <input type="text" name="customer" form="paymentForm"
-                   class="form-control neon-input"
-                   placeholder="Enter Name" required>
-        </div>
+        <div class="row g-3 align-items-end">
 
-        <div class="col-md-4">
-            <label class="mb-1">Payment</label>
-            <input type="number" name="amount" form="paymentForm"
-                   class="form-control neon-input"
-                   placeholder="₹ 0" required>
-        </div>
+            <div class="col-md-5">
+                <label>Customer</label>
+                <input type="text" name="customer" class="form-control neon-input" required>
+            </div>
 
-        <div class="col-md-3">
-            <form method="post" id="paymentForm">
-                {% csrf_token %}
-                <input type="hidden" name="action" value="payment">
+            <div class="col-md-4">
+                <label>Payment</label>
+                <input type="number" name="amount" class="form-control neon-input" required>
+            </div>
+
+            <div class="col-md-3">
                 <button class="btn-neon-save w-100">💵 Receive Payment</button>
-            </form>
-        </div>
+            </div>
 
-    </div>
+        </div>
+    </form>
 
 </div>
 
@@ -80,7 +99,7 @@
     <thead>
         <tr>
             <th>Customer</th>
-            <th>Total Udhaar</th>
+            <th>Udhaar</th>
             <th>Paid</th>
             <th>Balance</th>
             <th>Details</th>
@@ -92,13 +111,15 @@
         {% for c in data %}
         <tr>
 
-            <td>{{ c.name }}</td>
+            <td><b>{{ c.name }}</b></td>
 
             <td class="text-warning">₹ {{ c.udhaar }}</td>
 
             <td class="text-success">₹ {{ c.paid }}</td>
 
-            <td class="text-danger fw-bold">₹ {{ c.balance }}</td>
+            <td class="{% if c.balance > 0 %}text-danger{% else %}text-success{% endif %}">
+                ₹ {{ c.balance }}
+            </td>
 
             <!-- DETAILS -->
             <td>
@@ -114,7 +135,7 @@
 
                             <a href="{% url 'delete_udhaar' e.id %}"
                                class="btn-delete"
-                               onclick="return confirm('Delete this udhaar entry?')">
+                               onclick="return confirm('Delete this udhaar?')">
                                ❌
                             </a>
                         </div>
@@ -147,7 +168,7 @@
             <td>
                 <a href="{% url 'delete_customer' c.id %}"
                    class="btn-delete"
-                   onclick="return confirm('Delete full customer data?')">
+                   onclick="return confirm('Delete full customer?')">
                    🗑
                 </a>
             </td>
