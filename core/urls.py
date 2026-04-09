@@ -64,4 +64,5 @@ urlpatterns = [
     path('yearly/', include('yearly_summary.urls')),
     path('billing/', include('billing.urls')),
     path('expense/', include('expenses.urls')),
+    path('udhaar/', include('udhaar.urls')),
 ]

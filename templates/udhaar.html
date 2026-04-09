@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>💰 Udhaar Ledger</h2>
+
+<div class="glass-card p-4 mb-4">
+
+    <h4 class="text-neon mb-4">💰 Udhaar Ledger</h4>
+
+    <!-- 🔥 ADD UDHAAR -->
+    <div class="row g-3 align-items-end mb-4">
+
+        <div class="col-md-3">
+            <label class="mb-1">Customer</label>
+            <input type="text" name="customer" form="udhaarForm"
+                   class="form-control neon-input"
+                   placeholder="Enter Name">
+        </div>
+
+        <div class="col-md-2">
+            <label class="mb-1">Amount</label>
+            <input type="number" name="amount" form="udhaarForm"
+                   class="form-control neon-input"
+                   placeholder="₹ 0">
+        </div>
+
+        <div class="col-md-4">
+            <label class="mb-1">Description</label>
+            <input type="text" name="desc" form="udhaarForm"
+                   class="form-control neon-input"
+                   placeholder="Xerox / Print">
+        </div>
+
+        <div class="col-md-3">
+            <form method="post" id="udhaarForm">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="udhaar">
+                <button class="btn-neon w-100">
+                    ➕ Add Udhaar
+                </button>
+            </form>
+        </div>
+
+    </div>
+    <hr style="border-color: var(--primary); opacity: 0.3;">
+    <!-- 🔥 RECEIVE PAYMENT -->
+    <div class="row g-3 align-items-end">
+
+        <div class="col-md-5">
+            <label class="mb-1">Customer</label>
+            <input type="text" name="customer" form="paymentForm"
+                   class="form-control neon-input"
+                   placeholder="Enter Name">
+        </div>
+
+        <div class="col-md-4">
+            <label class="mb-1">Payment</label>
+            <input type="number" name="amount" form="paymentForm"
+                   class="form-control neon-input"
+                   placeholder="₹ 0">
+        </div>
+
+        <div class="col-md-3">
+            <form method="post" id="paymentForm">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="payment">
+                <button class="btn-neon-save w-100">
+                    💵 Receive Payment
+                </button>
+            </form>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- TABLE -->
+<table class="table table-dark text-center">
+
+    <thead>
+        <tr>
+            <th>Customer</th>
+            <th>Total Udhaar</th>
+            <th>Paid</th>
+            <th>Balance</th>
+            <th>Details</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for c in data %}
+        <tr>
+            <td>{{ c.name }}</td>
+            <td>₹ {{ c.udhaar }}</td>
+            <td>₹ {{ c.paid }}</td>
+            <td style="color:red;">₹ {{ c.balance }}</td>
+
+            <td>
+                <details>
+                    <summary>View</summary>
+
+                    <b>Udhaar:</b>
+                    {% for e in c.entries %}
+                        <p>+ ₹ {{ e.amount }} - {{ e.description }}</p>
+                    {% endfor %}
+
+                    <b>Payments:</b>
+                    {% for p in c.payments %}
+                        <p>- ₹ {{ p.amount }}</p>
+                    {% endfor %}
+
+                </details>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+
+{% endblock %}

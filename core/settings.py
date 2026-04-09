@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'billing',
     'expenses',
     'accounts',
+    'udhaar',
 ]
 
 MIDDLEWARE = [

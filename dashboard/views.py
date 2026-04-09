@@ -4,7 +4,10 @@ from datetime import date, timedelta
 from expenses.models import Expense
 import calendar
 from django.contrib.auth.mixins import LoginRequiredMixin
+from udhaar.models import Customer
+from django.db.models import Sum
 
+# DashboardView
 class DashboardView(LoginRequiredMixin, TemplateView):
     template_name = "dashboard.html"
 
@@ -20,6 +23,33 @@ class DashboardView(LoginRequiredMixin, TemplateView):
 
         expense_month = Expense.objects.filter(date__month=today.month, date__year=today.year)
         total_expense = sum([e.amount for e in expense_month])
+
+        # ===== UDHAAR SYSTEM 🔥 =====
+        customers = Customer.objects.all()
+
+        total_udhaar = 0
+        total_paid = 0
+
+        customer_data = []
+
+        for c in customers:
+            udhaar = c.entries.aggregate(total=Sum('amount'))['total'] or 0
+            paid = c.payments.aggregate(total=Sum('amount'))['total'] or 0
+
+            balance = udhaar - paid
+
+            total_udhaar += udhaar
+            total_paid += paid
+
+            customer_data.append({
+                "name": c.name,
+                "balance": balance
+            })
+
+        # 👉 Top 5 biggest udhaar
+        customer_data = sorted(customer_data, key=lambda x: x["balance"], reverse=True)[:5]
+
+        total_balance = total_udhaar - total_paid
 
         # ===== TOTAL INCOME =====
         today_income = sum([i.grand_total() for i in today_data])
@@ -79,6 +109,12 @@ class DashboardView(LoginRequiredMixin, TemplateView):
             "yearly_income": yearly_income,
             "expense": total_expense,
             "profit": profit,
+            
+            # 🔥 UDHAAR DATA
+            "total_udhaar": total_udhaar,
+            "total_paid": total_paid,
+            "total_balance": total_balance,
+            "top_customers": customer_data,
 
             "xe": xe + xg,
             "press": press + pg,

@@ -108,6 +108,17 @@
               <i class="fa-solid fa-money-bill-wave"></i> <span>Expense</span>
             </a>
           </li>
+          
+          <li class="nav-item">
+            <a
+              href="{% url 'udhaar' %}"
+              class="nav-link {% if 'udhaar' in request.path %}active-link{% endif %}"
+            >
+              <i class="fa-solid fa-hand-holding-usd"></i> <span>💰 Udhaar</span>
+            </a>
+          </li>
+          
+          
 
           <li class="nav-item mt-3">
             <form

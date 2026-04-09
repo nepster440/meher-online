@@ -1,0 +1,58 @@
+from django.shortcuts import render, redirect
+from .models import Customer, Udhaar, Payment
+from django.db.models import Sum
+
+
+def udhaar_home(request):
+
+    if request.method == "POST":
+
+        action = request.POST.get("action")
+        name = request.POST.get("customer")
+
+        customer, _ = Customer.objects.get_or_create(name=name)
+
+        # 👉 Udhaar add
+        if action == "udhaar":
+            amount = float(request.POST.get("amount"))
+            desc = request.POST.get("desc")
+
+            Udhaar.objects.create(
+                customer=customer,
+                amount=amount,
+                description=desc
+            )
+
+        # 👉 Payment add
+        elif action == "payment":
+            amount = float(request.POST.get("amount"))
+
+            Payment.objects.create(
+                customer=customer,
+                amount=amount
+            )
+
+        return redirect('udhaar')
+
+    # ===== DISPLAY =====
+    customers = Customer.objects.all()
+
+    data = []
+
+    for c in customers:
+
+        total_udhaar = c.entries.aggregate(total=Sum('amount'))['total'] or 0
+        total_paid = c.payments.aggregate(total=Sum('amount'))['total'] or 0
+
+        balance = total_udhaar - total_paid
+
+        data.append({
+            "name": c.name,
+            "udhaar": total_udhaar,
+            "paid": total_paid,
+            "balance": balance,
+            "entries": c.entries.all(),
+            "payments": c.payments.all()
+        })
+
+    return render(request, "udhaar.html", {"data": data})
