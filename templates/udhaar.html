@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<h2>💰 Udhaar Ledger</h2>
+<h2 class="mb-3">💰 Udhaar Ledger</h2>
 
 <div class="glass-card p-4 mb-4">
 
@@ -15,14 +15,14 @@
             <label class="mb-1">Customer</label>
             <input type="text" name="customer" form="udhaarForm"
                    class="form-control neon-input"
-                   placeholder="Enter Name">
+                   placeholder="Enter Name" required>
         </div>
 
         <div class="col-md-2">
             <label class="mb-1">Amount</label>
             <input type="number" name="amount" form="udhaarForm"
                    class="form-control neon-input"
-                   placeholder="₹ 0">
+                   placeholder="₹ 0" required>
         </div>
 
         <div class="col-md-4">
@@ -36,14 +36,14 @@
             <form method="post" id="udhaarForm">
                 {% csrf_token %}
                 <input type="hidden" name="action" value="udhaar">
-                <button class="btn-neon w-100">
-                    ➕ Add Udhaar
-                </button>
+                <button class="btn-neon w-100">➕ Add Udhaar</button>
             </form>
         </div>
 
     </div>
+
     <hr style="border-color: var(--primary); opacity: 0.3;">
+
     <!-- 🔥 RECEIVE PAYMENT -->
     <div class="row g-3 align-items-end">
 
@@ -51,23 +51,21 @@
             <label class="mb-1">Customer</label>
             <input type="text" name="customer" form="paymentForm"
                    class="form-control neon-input"
-                   placeholder="Enter Name">
+                   placeholder="Enter Name" required>
         </div>
 
         <div class="col-md-4">
             <label class="mb-1">Payment</label>
             <input type="number" name="amount" form="paymentForm"
                    class="form-control neon-input"
-                   placeholder="₹ 0">
+                   placeholder="₹ 0" required>
         </div>
 
         <div class="col-md-3">
             <form method="post" id="paymentForm">
                 {% csrf_token %}
                 <input type="hidden" name="action" value="payment">
-                <button class="btn-neon-save w-100">
-                    💵 Receive Payment
-                </button>
+                <button class="btn-neon-save w-100">💵 Receive Payment</button>
             </form>
         </div>
 
@@ -75,8 +73,9 @@
 
 </div>
 
-<!-- TABLE -->
-<table class="table table-dark text-center">
+<!-- 🔥 TABLE -->
+<div class="glass-card p-3">
+<table class="table-neon text-center w-100">
 
     <thead>
         <tr>
@@ -85,37 +84,79 @@
             <th>Paid</th>
             <th>Balance</th>
             <th>Details</th>
+            <th>Delete</th>
         </tr>
     </thead>
 
     <tbody>
         {% for c in data %}
         <tr>
-            <td>{{ c.name }}</td>
-            <td>₹ {{ c.udhaar }}</td>
-            <td>₹ {{ c.paid }}</td>
-            <td style="color:red;">₹ {{ c.balance }}</td>
 
+            <td>{{ c.name }}</td>
+
+            <td class="text-warning">₹ {{ c.udhaar }}</td>
+
+            <td class="text-success">₹ {{ c.paid }}</td>
+
+            <td class="text-danger fw-bold">₹ {{ c.balance }}</td>
+
+            <!-- DETAILS -->
             <td>
                 <details>
-                    <summary>View</summary>
+                    <summary class="btn-neon px-2 py-1">View</summary>
 
-                    <b>Udhaar:</b>
-                    {% for e in c.entries %}
-                        <p>+ ₹ {{ e.amount }} - {{ e.description }}</p>
-                    {% endfor %}
+                    <div class="mt-2 text-start">
 
-                    <b>Payments:</b>
-                    {% for p in c.payments %}
-                        <p>- ₹ {{ p.amount }}</p>
-                    {% endfor %}
+                        <b class="text-warning">Udhaar:</b>
+                        {% for e in c.entries %}
+                        <div class="d-flex justify-content-between">
+                            <span>+ ₹ {{ e.amount }} - {{ e.description }}</span>
 
+                            <a href="{% url 'delete_udhaar' e.id %}"
+                               class="btn-delete"
+                               onclick="return confirm('Delete this udhaar entry?')">
+                               ❌
+                            </a>
+                        </div>
+                        {% empty %}
+                        <p>No Udhaar</p>
+                        {% endfor %}
+
+                        <hr>
+
+                        <b class="text-success">Payments:</b>
+                        {% for p in c.payments %}
+                        <div class="d-flex justify-content-between">
+                            <span>- ₹ {{ p.amount }}</span>
+
+                            <a href="{% url 'delete_payment' p.id %}"
+                               class="btn-delete"
+                               onclick="return confirm('Delete this payment?')">
+                               ❌
+                            </a>
+                        </div>
+                        {% empty %}
+                        <p>No Payment</p>
+                        {% endfor %}
+
+                    </div>
                 </details>
             </td>
+
+            <!-- CUSTOMER DELETE -->
+            <td>
+                <a href="{% url 'delete_customer' c.id %}"
+                   class="btn-delete"
+                   onclick="return confirm('Delete full customer data?')">
+                   🗑
+                </a>
+            </td>
+
         </tr>
         {% endfor %}
     </tbody>
 
 </table>
+</div>
 
 {% endblock %}

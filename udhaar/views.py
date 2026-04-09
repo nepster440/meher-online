@@ -1,7 +1,6 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from .models import Customer, Udhaar, Payment
 from django.db.models import Sum
-
 
 def udhaar_home(request):
 
@@ -56,3 +55,9 @@ def udhaar_home(request):
         })
 
     return render(request, "udhaar.html", {"data": data})
+
+
+def delete_customer(request, id):
+    customer = get_object_or_404(Customer, id=id)
+    customer.delete()
+    return redirect('udhaar')
